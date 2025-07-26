@@ -158,7 +158,7 @@ const NaijaMarket = () => {
           className="text-center"
         >
           <h1 className="text-3xl font-bold text-white mb-2">
-            Find Amazing Deals with <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">Reown</span>
+            Find Amazing Deals with <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">Ringo</span>
           </h1>
           <p className="text-white/80 text-lg mb-6">
             Buy & sell with confidence in Nigeria
