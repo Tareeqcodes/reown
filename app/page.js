@@ -1,529 +1,398 @@
 'use client';
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Search, 
-  Plus, 
-  MessageCircle, 
-  Star, 
-  MapPin, 
-  Heart,
-  Filter,
-  X,
-  Send,
-  Camera,
-  ChevronLeft,
-  Shield,
-  Zap,
-  TrendingUp,
-  Eye
-} from 'lucide-react';
+import { useState } from 'react';
+import { Heart, Search, Filter, Star, MapPin, Clock, Camera, User, Home, MessageCircle, Plus, Bell, CheckCircle, Shield, Verified, ChevronLeft, Share, MoreHorizontal, Eye, TrendingUp, Zap, Award } from 'lucide-react';
 
-const NaijaMarket = () => {
+const RingoApp = () => {
   const [currentView, setCurrentView] = useState('home');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [favorites, setFavorites] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('trending');
   const [selectedItem, setSelectedItem] = useState(null);
-  const [showChat, setShowChat] = useState(false);
-  const [favorites, setFavorites] = useState([]);
-  const [user, setUser] = useState(null);
 
-  // Simplified mock data with trending focus
-  const [items, setItems] = useState([
+  const categories = [
+    { id: 'trending', name: 'Trending', icon: TrendingUp, color: 'bg-red-500' },
+    { id: 'new-in', name: 'New In', icon: Zap, color: 'bg-blue-500' },
+    { id: 'affordable', name: 'Affordable', icon: CheckCircle, color: 'bg-green-500' },
+    { id: 'premium', name: 'Premium', icon: Award, color: 'bg-purple-500' }
+  ];
+  
+  const listings = [
     {
       id: 1,
-      title: "iPhone 14 Pro Max",
-      price: 520000,
-      originalPrice: 680000,
-      condition: "Like New",
-      location: "VI, Lagos",
-      image: "https://images.unsplash.com/photo-1678652197831-2d180705cd2c?w=600",
-      seller: { name: "Kemi", rating: 4.9, verified: true },
-      trending: true,
-      views: 234,
-      timeAgo: "2h"
+      title: "Royal Blue Agbada with Gold Embroidery",
+      price: "₦45,000",
+      originalPrice: "₦85,000",
+      location: "Victoria Island, Lagos",
+      seller: "FashionEmpress",
+      sellerImage: "https://images.unsplash.com/photo-1494790108755-2616b612b829?w=40&h=40&fit=crop&crop=face",
+      rating: 4.8,
+      totalReviews: 127,
+      timePosted: "2h",
+      images: [
+        "https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=400&h=600&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=600&fit=crop&crop=center"
+      ],
+      measurements: { 
+        chest: "44\"", 
+        length: "60\"", 
+        sleeve: "24\"",
+        shoulder: "18\"" 
+      },
+      verified: true,
+      category: 'premium',
+      condition: 'Like New',
+      brand: 'Adire Couture',
+      size: 'XL',
+      views: 89,
+      likes: 23,
+      isLiked: false
     },
     {
       id: 2,
-      title: "Designer Sneakers",
-      price: 45000,
-      originalPrice: 85000,
-      condition: "Good",
-      location: "Ikeja, Lagos",
-      image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600",
-      seller: { name: "Tunde", rating: 4.7, verified: true },
-      trending: true,
+      title: "Ankara Print Midi Dress - Floral Pattern",
+      price: "₦12,500",
+      originalPrice: "₦25,000",
+      location: "Wuse II, Abuja",
+      seller: "AfroStyleBae",
+      sellerImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&h=40&fit=crop&crop=face",
+      rating: 4.9,
+      totalReviews: 203,
+      timePosted: "1d",
+      images: [
+        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=600&fit=crop&crop=center"
+      ],
+      measurements: { 
+        waist: "32\"", 
+        chest: "36\"", 
+        length: "45\"",
+        hip: "38\"" 
+      },
+      verified: true,
+      category: 'affordable',
+      condition: 'Excellent',
+      brand: 'Vlisco',
+      size: 'M',
       views: 156,
-      timeAgo: "4h"
+      likes: 45,
+      isLiked: false
     },
     {
       id: 3,
-      title: "MacBook Air M2",
-      price: 380000,
-      originalPrice: 520000,
-      condition: "Excellent",
-      location: "Abuja",
-      image: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600",
-      seller: { name: "Ada", rating: 4.8, verified: true },
-      trending: false,
-      views: 89,
-      timeAgo: "1d"
-    },
-    {
-      id: 4,
-      title: "Vintage Leather Jacket",
-      price: 25000,
-      originalPrice: 45000,
-      condition: "Very Good",
-      location: "PH",
-      image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600",
-      seller: { name: "Chidi", rating: 4.6, verified: false },
-      trending: true,
-      views: 78,
-      timeAgo: "6h"
+      title: "Designer Emerald Kaftan - Silk Blend",
+      price: "₦28,000",
+      originalPrice: "₦60,000",
+      location: "Sabon Gari, Kano",
+      seller: "NorthernVibes",
+      sellerImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face",
+      rating: 4.7,
+      totalReviews: 89,
+      timePosted: "3h",
+      images: [
+        "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=600&fit=crop&crop=center"
+      ],
+      measurements: { 
+        chest: "38\"", 
+        length: "54\"", 
+        sleeve: "20\"",
+        shoulder: "16\"" 
+      },
+      verified: true,
+      category: 'trending',
+      condition: 'Very Good',
+      brand: 'Hausa Couture',
+      size: 'L',
+      views: 234,
+      likes: 67,
+      isLiked: false
     }
-  ]);
-
-  const categories = [
-    { id: 'trending', name: 'Trending', icon: '🔥', color: 'from-red-500 to-orange-500' },
-    { id: 'phones', name: 'Phones', icon: '📱', color: 'from-blue-500 to-purple-500' },
-    { id: 'fashion', name: 'Fashion', icon: '👔', color: 'from-pink-500 to-rose-500' },
-    { id: 'tech', name: 'Tech', icon: '💻', color: 'from-green-500 to-emerald-500' },
-    { id: 'home', name: 'Home', icon: '🏠', color: 'from-yellow-500 to-amber-500' }
   ];
 
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-      minimumFractionDigits: 0
-    }).format(price);
-  };
+  const filteredListings = listings.filter(item => item.category === selectedCategory);
 
-  const filteredItems = items.filter(item => {
-    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'trending' ? item.trending : true;
-    return matchesSearch && matchesCategory;
-  });
-
-  const toggleFavorite = (itemId) => {
+  const toggleFavorite = (id, event) => {
+    event.stopPropagation();
     setFavorites(prev => 
-      prev.includes(itemId) 
-        ? prev.filter(id => id !== itemId)
-        : [...prev, itemId]
+      prev.includes(id) ? prev.filter(fav => fav !== id) : [...prev, id]
     );
   };
 
-  // Hero Section Component
-  const HeroSection = () => (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="relative overflow-hidden"
-    >
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600"></div>
-      <div className="absolute inset-0 bg-black/20"></div>
-      
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-20 h-20 bg-white/10 rounded-full blur-xl"
-            animate={{
-              x: [0, 100, 0],
-              y: [0, -100, 0],
-              scale: [1, 1.5, 1]
-            }}
-            transition={{
-              duration: 8 + i * 2,
-              repeat: Infinity,
-              delay: i * 0.5
-            }}
-            style={{
-              left: `${20 + i * 15}%`,
-              top: `${10 + i * 10}%`
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 px-6 py-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-center"
-        >
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Find Amazing Deals with <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">Ringo</span>
-          </h1>
-          <p className="text-white/80 text-lg mb-6">
-            Buy & sell with confidence in Nigeria
-          </p>
-          
-          {/* Search Bar */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4 }}
-            className="relative"
-          >
-            <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-1">
-              <div className="flex items-center bg-white rounded-xl shadow-lg">
-                <Search className="ml-4 text-gray-400" size={20} />
-                <input
-                  type="text"
-                  placeholder="Search anything..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 px-4 py-4 bg-transparent focus:outline-none text-gray-700 placeholder-gray-400"
-                />
-                <button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-3 rounded-lg mr-1">
-                  <Filter size={18} />
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
-    </motion.div>
-  );
-
-  // Category Pills
-  const CategoryPills = () => (
-    <div className="px-4 py-4">
-      <div className="flex space-x-3 overflow-x-auto scrollbar-hide">
-        {categories.map((category, index) => (
-          <motion.button
-            key={category.id}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1 }}
-            onClick={() => setSelectedCategory(category.id)}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-full whitespace-nowrap transition-all ${
-              selectedCategory === category.id
-                ? 'bg-white shadow-lg scale-105'
-                : 'bg-gray-100 hover:bg-gray-200'
-            }`}
-          >
-            <span className="text-lg">{category.icon}</span>
-            <span className={`font-medium ${
-              selectedCategory === category.id 
-                ? 'bg-gradient-to-r ' + category.color + ' bg-clip-text text-transparent'
-                : 'text-gray-700'
-            }`}>
-              {category.name}
-            </span>
-          </motion.button>
-        ))}
-      </div>
-    </div>
-  );
-
-  // Modern Item Card
-  const ItemCard = ({ item, index }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      whileHover={{ y: -5 }}
-      className="bg-white rounded-3xl shadow-lg overflow-hidden cursor-pointer"
-      onClick={() => setSelectedItem(item)}
-    >
-      <div className="relative">
-        <img
-          src={item.image}
-          alt={item.title}
-          className="w-full h-48 object-cover"
-        />
-        
-        {/* Overlay Elements */}
-        <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
-          {item.trending && (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-medium flex items-center space-x-1"
-            >
-              <Zap size={12} />
-              <span>Hot</span>
-            </motion.div>
-          )}
-          
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleFavorite(item.id);
-            }}
-            className="bg-white/20 backdrop-blur-sm p-2 rounded-full"
-          >
-            <Heart
-              size={16}
-              className={favorites.includes(item.id) ? 'text-red-500 fill-current' : 'text-white'}
-            />
-          </motion.button>
-        </div>
-
-        {/* Price Tag */}
-        <div className="absolute bottom-3 left-3">
-          <div className="bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-full">
-            <span className="font-bold text-lg">{formatPrice(item.price)}</span>
-            {item.originalPrice && (
-              <span className="ml-2 text-sm line-through text-gray-300">
-                {formatPrice(item.originalPrice)}
-              </span>
-            )}
+  const Header = () => (
+    <div className="bg-white">
+      {/* Status Bar Simulation */}
+      <div className="h-11 bg-black flex items-center justify-between px-4 text-white text-sm">
+        <span>9:41</span>
+        <span>••••• Airtel</span>
+        <div className="flex items-center gap-1">
+          <span>100%</span>
+          <div className="w-6 h-3 border border-white rounded-sm">
+            <div className="w-full h-full bg-white rounded-sm"></div>
           </div>
         </div>
       </div>
       
-      <div className="p-4">
-        <h3 className="font-bold text-gray-900 mb-2 text-lg leading-tight">
+      {/* Main Header */}
+      <div className="px-4 py-6 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-black text-white tracking-tight">RINGO</h1>
+            <p className="text-slate-300 text-sm font-medium mt-1">Authentic African Fashion</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <button className="relative p-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+              <Bell className="w-5 h-5 text-white" />
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                <span className="text-xs text-white font-bold">3</span>
+              </div>
+            </button>
+            <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center border-2 border-white/20">
+              <User className="w-5 h-5 text-white" />
+            </div>
+          </div>
+        </div>
+        
+        {/* Search Bar */}
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <Search className="w-5 h-5 text-slate-400" />
+          </div>
+          <input 
+            type="text" 
+            placeholder="Search Agbada, Ankara, Sneakers..."
+            className="w-full bg-white/95 backdrop-blur-sm border-0 rounded-2xl py-4 pl-12 pr-12 text-slate-900 placeholder-slate-500 shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 font-medium"
+          />
+          <button className="absolute inset-y-0 right-0 pr-4 flex items-center">
+            <Filter className="w-5 h-5 text-slate-500" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const CategoryTabs = () => (
+    <div className="bg-white px-4 py-2 border-b border-slate-100">
+      <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+        {categories.map(category => {
+          const IconComponent = category.icon;
+          const isActive = selectedCategory === category.id;
+          return (
+            <button
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-full font-semibold text-sm whitespace-nowrap transition-all duration-200 ${
+                isActive
+                  ? `${category.color} text-white shadow-md transform scale-105`
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+            >
+              <IconComponent className="w-4 h-4" />
+              {category.name}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  const ProductCard = ({ item }) => (
+    <div 
+      className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden mb-4 mx-4 hover:shadow-lg transition-all duration-300 cursor-pointer"
+      onClick={() => setSelectedItem(item)}
+    >
+      {/* Image Container */}
+      <div className="relative">
+        <div className="aspect-[4/5] overflow-hidden">
+          <img 
+            src={item.images[0]} 
+            alt={item.title}
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+          />
+        </div>
+        
+        {/* Overlay Elements */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+        
+        {/* Top Actions */}
+        <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+          <div className="flex gap-2">
+            {item.category === 'trending' && (
+              <div className="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 backdrop-blur-sm">
+                🔥 Hot
+              </div>
+            )}
+            {item.condition && (
+              <div className="bg-white/90 text-slate-700 px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
+                {item.condition}
+              </div>
+            )}
+          </div>
+          
+          <button
+            onClick={(e) => toggleFavorite(item.id, e)}
+            className={`p-2 rounded-full backdrop-blur-sm transition-all duration-200 ${
+              favorites.includes(item.id)
+                ? 'bg-red-500 text-white shadow-lg scale-110'
+                : 'bg-white/90 text-slate-600 hover:bg-white hover:scale-110'
+            }`}
+          >
+            <Heart 
+              className={`w-5 h-5 ${favorites.includes(item.id) ? 'fill-current' : ''}`} 
+            />
+          </button>
+        </div>
+        
+        {/* Bottom Stats */}
+        <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+          <div className="flex items-center gap-3 text-white text-sm">
+            <div className="flex items-center gap-1">
+              <Eye className="w-4 h-4" />
+              <span className="font-medium">{item.views}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Heart className="w-4 h-4" />
+              <span className="font-medium">{item.likes}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Content */}
+      <div className="p-5">
+        {/* Price */}
+        <div className="flex items-baseline gap-2 mb-3">
+          <span className="text-2xl font-black text-slate-900">{item.price}</span>
+          {item.originalPrice && (
+            <>
+              <span className="text-sm text-slate-400 line-through font-medium">{item.originalPrice}</span>
+              <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-bold">
+                {Math.round((1 - parseInt(item.price.replace(/[₦,]/g, '')) / parseInt(item.originalPrice.replace(/[₦,]/g, ''))) * 100)}% OFF
+              </span>
+            </>
+          )}
+        </div>
+        
+        {/* Title */}
+        <h3 className="font-bold text-slate-900 text-lg leading-tight mb-3 line-clamp-2">
           {item.title}
         </h3>
         
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center space-x-2">
-            <div className="flex items-center">
-              <MapPin size={14} className="text-gray-400 mr-1" />
-              <span className="text-sm text-gray-600">{item.location}</span>
-            </div>
-            <span className="text-xs text-gray-400">•</span>
-            <span className="text-sm text-gray-600">{item.timeAgo}</span>
+        {/* Brand & Size */}
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-medium">
+            {item.brand}
+          </span>
+          <span className="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-medium">
+            Size {item.size}
+          </span>
+        </div>
+        
+        {/* Location & Time */}
+        <div className="flex items-center justify-between text-sm text-slate-500 mb-4">
+          <div className="flex items-center gap-1">
+            <MapPin className="w-4 h-4" />
+            <span className="font-medium">{item.location}</span>
           </div>
-          
-          <div className="flex items-center space-x-1 text-gray-400">
-            <Eye size={14} />
-            <span className="text-xs">{item.views}</span>
+          <div className="flex items-center gap-1">
+            <Clock className="w-4 h-4" />
+            <span>{item.timePosted} ago</span>
           </div>
         </div>
         
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-bold">
-                {item.seller.name.charAt(0)}
-              </span>
-            </div>
-            <div>
-              <div className="flex items-center space-x-1">
-                <span className="text-sm font-medium text-gray-700">{item.seller.name}</span>
-                {item.seller.verified && (
-                  <Shield size={12} className="text-blue-500" />
-                )}
-              </div>
-              <div className="flex items-center">
-                <Star size={12} className="text-yellow-400 fill-current" />
-                <span className="text-xs text-gray-500 ml-1">{item.seller.rating}</span>
-              </div>
-            </div>
-          </div>
-          
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowChat(true);
-            }}
-            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-2 rounded-full"
-          >
-            <MessageCircle size={16} />
-          </motion.button>
-        </div>
-      </div>
-    </motion.div>
-  );
-
-  // Floating Action Button
-  const FloatingActionButton = () => (
-    <motion.button
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
-      onClick={() => setCurrentView('sell')}
-      className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-2xl flex items-center justify-center z-50"
-    >
-      <Plus size={24} className="text-white" />
-    </motion.button>
-  );
-
-  // Simple Sell Form
-  const SellForm = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="min-h-screen bg-gray-50"
-    >
-      <div className="bg-white shadow-sm p-4 flex items-center space-x-3">
-        <button
-          onClick={() => setCurrentView('home')}
-          className="p-2 hover:bg-gray-100 rounded-full"
-        >
-          <ChevronLeft size={20} />
-        </button>
-        <h1 className="text-xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-          Sell Your Item
-        </h1>
-      </div>
-      
-      <div className="p-4 space-y-6">
-        {/* Photo Upload */}
-        <div className="bg-white rounded-2xl p-6">
-          <h3 className="font-bold text-gray-900 mb-4">Add Photos</h3>
-          <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-purple-400 transition-colors">
-            <Camera size={48} className="mx-auto text-gray-400 mb-2" />
-            <p className="text-gray-600 font-medium">Tap to add photos</p>
-            <p className="text-sm text-gray-400 mt-1">Up to 5 photos</p>
-          </div>
-        </div>
-
-        {/* Item Details */}
-        <div className="bg-white rounded-2xl p-6 space-y-4">
-          <input
-            type="text"
-            placeholder="What are you selling?"
-            className="w-full p-4 bg-gray-50 rounded-xl border-0 focus:ring-2 focus:ring-purple-500 text-lg font-medium"
-          />
-          
-          <div className="grid grid-cols-2 gap-4">
-            <input
-              type="number"
-              placeholder="Price (₦)"
-              className="w-full p-4 bg-gray-50 rounded-xl border-0 focus:ring-2 focus:ring-purple-500"
+        {/* Seller Info */}
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-3">
+            <img 
+              src={item.sellerImage} 
+              alt={item.seller}
+              className="w-8 h-8 rounded-full object-cover"
             />
-            <select className="w-full p-4 bg-gray-50 rounded-xl border-0 focus:ring-2 focus:ring-purple-500">
-              <option>Condition</option>
-              <option>New</option>
-              <option>Like New</option>
-              <option>Good</option>
-              <option>Fair</option>
-            </select>
-          </div>
-          
-          <textarea
-            placeholder="Tell us more about your item..."
-            rows={4}
-            className="w-full p-4 bg-gray-50 rounded-xl border-0 focus:ring-2 focus:ring-purple-500 resize-none"
-          />
-        </div>
-
-        {/* Location */}
-        <div className="bg-white rounded-2xl p-6">
-          <h3 className="font-bold text-gray-900 mb-4">Location</h3>
-          <select className="w-full p-4 bg-gray-50 rounded-xl border-0 focus:ring-2 focus:ring-purple-500">
-            <option>Select your location</option>
-            <option>Lagos</option>
-            <option>Abuja</option>
-            <option>Port Harcourt</option>
-            <option>Kano</option>
-          </select>
-        </div>
-
-        {/* Post Button */}
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => setCurrentView('home')}
-          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-2xl font-bold text-lg shadow-lg"
-        >
-          Post Your Item
-        </motion.button>
-      </div>
-    </motion.div>
-  );
-
-  // Main Home View
-  const HomeView = () => (
-    <div className="min-h-screen bg-gray-50">
-      <HeroSection />
-      <CategoryPills />
-      
-      <div className="px-4 pb-24">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-gray-900">
-            {selectedCategory === 'trending' ? 'Trending Now' : 'Latest Items'}
-          </h2>
-          <div className="flex items-center space-x-1 text-purple-600">
-            <TrendingUp size={16} />
-            <span className="text-sm font-medium">{filteredItems.length} items</span>
+            <div>
+              <div className="flex items-center gap-1">
+                <span className="text-sm font-bold text-slate-900">{item.seller}</span>
+                {item.verified && <Verified className="w-4 h-4 text-blue-500" />}
+              </div>
+              <div className="flex items-center gap-1">
+                <Star className="w-3 h-3 text-yellow-400 fill-current" />
+                <span className="text-xs text-slate-600 font-medium">{item.rating} ({item.totalReviews})</span>
+              </div>
+            </div>
           </div>
         </div>
         
-        <div className="space-y-6">
-          {filteredItems.map((item, index) => (
-            <ItemCard key={item.id} item={item} index={index} />
-          ))}
+        {/* Measurements Preview */}
+        <div className="bg-gradient-to-r from-slate-50 to-slate-100 rounded-2xl p-4 mb-5">
+          <div className="flex items-center justify-between mb-2">
+            <h4 className="text-sm font-bold text-slate-700">📏 Measurements</h4>
+            <span className="text-xs text-slate-500 font-medium">Tap for details</span>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {Object.entries(item.measurements).slice(0, 4).map(([key, value]) => (
+              <div key={key} className="text-center">
+                <div className="text-xs text-slate-500 capitalize font-medium mb-1">{key}</div>
+                <div className="text-sm font-bold text-slate-900">{value}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Action Buttons */}
+        <div className="flex gap-3">
+          <button className="flex-1 bg-gradient-to-r from-slate-900 to-slate-800 text-white py-4 rounded-2xl font-bold text-sm hover:from-slate-800 hover:to-slate-700 transition-all duration-200 shadow-lg">
+            Buy with Escrow
+          </button>
+          <button className="p-4 border-2 border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">
+            <MessageCircle className="w-5 h-5 text-slate-600" />
+          </button>
+          <button className="p-4 border-2 border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">
+            <Share className="w-5 h-5 text-slate-600" />
+          </button>
         </div>
       </div>
-      
-      <FloatingActionButton />
     </div>
   );
 
-  // Simple Chat Modal
-  const ChatModal = () => (
-    <AnimatePresence>
-      {showChat && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 flex items-end z-50"
-        >
-          <motion.div
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            className="bg-white rounded-t-3xl w-full h-2/3 p-6"
+  const BottomNav = () => (
+    <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-slate-200">
+      <div className="flex justify-around py-3 px-2">
+        {[
+          { icon: Home, label: 'Home', view: 'home', isActive: currentView === 'home' },
+          { icon: Search, label: 'Explore', view: 'search', isActive: currentView === 'search' },
+          { icon: Plus, label: 'Sell', view: 'sell', isActive: currentView === 'sell', isSpecial: true },
+          { icon: Heart, label: 'Saved', view: 'favorites', isActive: currentView === 'favorites' },
+          { icon: User, label: 'Profile', view: 'profile', isActive: currentView === 'profile' }
+        ].map(({ icon: Icon, label, view, isActive, isSpecial }) => (
+          <button
+            key={view}
+            onClick={() => setCurrentView(view)}
+            className={`flex flex-col items-center py-2 px-3 rounded-2xl transition-all duration-200 ${
+              isSpecial 
+                ? 'bg-gradient-to-r from-slate-900 to-slate-800 text-white shadow-lg transform -translate-y-1' 
+                : isActive 
+                ? 'text-slate-900 bg-slate-100' 
+                : 'text-slate-400 hover:text-slate-600'
+            }`}
           >
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold">Chat with Seller</h2>
-              <button
-                onClick={() => setShowChat(false)}
-                className="p-2 hover:bg-gray-100 rounded-full"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            
-            <div className="flex-1 flex flex-col justify-center items-center text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-4">
-                <MessageCircle size={24} className="text-white" />
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Start a conversation</h3>
-              <p className="text-gray-600 mb-6">Send a message to the seller</p>
-              
-              <div className="w-full max-w-md">
-                <input
-                  type="text"
-                  placeholder="Hi, is this still available?"
-                  className="w-full p-4 bg-gray-50 rounded-xl border-0 focus:ring-2 focus:ring-purple-500 mb-4"
-                />
-                <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-xl font-bold">
-                  Send Message
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+            <Icon className={`w-5 h-5 mb-1 ${isSpecial ? 'text-white' : ''}`} />
+            <span className={`text-xs font-medium ${isSpecial ? 'text-white' : ''}`}>{label}</span>
+          </button>
+        ))}
+      </div>
+      <div className="h-safe-bottom"></div>
+    </div>
   );
 
   return (
-    <div className="relative">
-      {currentView === 'home' && <HomeView />}
-      {currentView === 'sell' && <SellForm />}
-      <ChatModal />
+    <div className="min-h-screen bg-slate-50">
+      <Header />
+      <CategoryTabs />
+      
+      <div className="pb-24 pt-2">
+        {filteredListings.map(item => (
+          <ProductCard key={item.id} item={item} />
+        ))}
+      </div>
+      
+      <BottomNav />
     </div>
   );
 };
 
-export default NaijaMarket;
+export default RingoApp;
