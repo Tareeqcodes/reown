@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppins.variable} font-sans bg-gray-100 text-gray-900 antialiased`}
       >
-        <div className=" max-w-md mx-auto">
+        <div>
           {children}
         </div>
       </body>
